@@ -144,6 +144,7 @@ function createDayTicket(plan = 1000) {
   return {
     plan,
     items: createTicketItems(plan),
+    vegetables: [],
   };
 }
 
@@ -215,13 +216,19 @@ function App() {
   const [weightInput, setWeightInput] = useState('');
   const [weighingDateInput, setWeighingDateInput] = useState(getTodayIsoDate());
   const [productInput, setProductInput] = useState('');
+  const [vegetableInput, setVegetableInput] = useState('');
   const [isPdfLoading, setIsPdfLoading] = useState(false);
   const [bmiErrors, setBmiErrors] = useState({});
   const [bmiResult, setBmiResult] = useState(null);
 
   const shoppingPdfRef = useRef(null);
 
-  const dayTicket = dailyData[selectedDate] || createDayTicket(1000);
+  const dayTicket = {
+    ...(dailyData[selectedDate] || createDayTicket(1000)),
+    vegetables: Array.isArray(dailyData[selectedDate]?.vegetables)
+      ? dailyData[selectedDate].vegetables
+      : [],
+  };
   const eatenCount = dayTicket.items.filter((item) => item.checked).length;
 
   const eatenWithDetails = useMemo(
@@ -246,18 +253,41 @@ function App() {
   const updateDayTicket = (date, updater) => {
     setDailyData((prev) => {
       const base = prev[date] || createDayTicket(1000);
+      const normalizedBase = {
+        ...base,
+        vegetables: Array.isArray(base.vegetables) ? base.vegetables : [],
+      };
+
       return {
         ...prev,
-        [date]: updater(base),
+        [date]: updater(normalizedBase),
       };
     });
   };
 
   const handlePlanChange = (event) => {
     const nextPlan = Number(event.target.value);
-    updateDayTicket(selectedDate, () => createDayTicket(nextPlan));
+    updateDayTicket(selectedDate, (ticket) => ({
+      ...createDayTicket(nextPlan),
+      vegetables: ticket.vegetables,
+    }));
     setEditingFoodId(null);
     setShowFoodDetails(false);
+  };
+
+  const addVegetable = (event) => {
+    event.preventDefault();
+    const vegetableName = vegetableInput.trim();
+
+    if (!vegetableName) {
+      return;
+    }
+
+    updateDayTicket(selectedDate, (ticket) => ({
+      ...ticket,
+      vegetables: [...ticket.vegetables, { id: crypto.randomUUID(), name: vegetableName }],
+    }));
+    setVegetableInput('');
   };
 
   const toggleFoodItem = (itemId, nextChecked) => {
@@ -490,7 +520,7 @@ function App() {
     <div className="app" dir="rtl">
       <div className="app-shell">
         <header className="top-card">
-          <h1>מנהלת הדיאטה שלי</h1>
+          <h1>ניהול הדיאטה שלי</h1>
           <p>אפליקציה אישית לניהול אכילה, שקילות וקניות בצורה נעימה ופשוטה.</p>
         </header>
 
@@ -607,23 +637,44 @@ function App() {
               ))}
             </div>
 
+            <form className="vegetable-form" onSubmit={addVegetable}>
+              <label>
+               ירקות חופשי
+                <input
+                  type="text"
+                  value={vegetableInput}
+                  onChange={(event) => setVegetableInput(event.target.value)}
+                  placeholder="למשל: מלפפון, עגבנייה, חסה"
+                />
+              </label>
+              <button type="submit">הוספת ירק</button>
+            </form>
+
             <button
               type="button"
               className="secondary-btn"
               onClick={() => setShowFoodDetails((prev) => !prev)}
             >
-              {showFoodDetails ? 'הסתרי רשימת אכילה יומית' : 'הציגי מה נאכל היום'}
+              {showFoodDetails ? 'הסתר רשימת אכילה יומית' : 'הצג מה נאכל היום'}
             </button>
 
             {showFoodDetails && (
               <div className="food-list">
-                {eatenWithDetails.length === 0 && <p>עדיין לא סומן שום פריט להיום.</p>}
+                {eatenWithDetails.length === 0 && dayTicket.vegetables.length === 0 && (
+                  <p>עדיין לא סומן שום פריט להיום.</p>
+                )}
 
-                {eatenWithDetails.length > 0 && (
+                {(eatenWithDetails.length > 0 || dayTicket.vegetables.length > 0) && (
                   <ul>
                     {eatenWithDetails.map((item) => (
                       <li key={`daily-note-${item.id}`}>
                         <strong>{item.title}:</strong> {item.note || 'סומן ללא פירוט'}
+                      </li>
+                    ))}
+
+                    {dayTicket.vegetables.map((vegetable) => (
+                      <li key={`daily-vegetable-${vegetable.id}`}>
+                        <strong>ירקות חופשי:</strong> {vegetable.name}
                       </li>
                     ))}
                   </ul>

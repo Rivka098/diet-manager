@@ -122,6 +122,18 @@
   margin-bottom: 16px;
 }
 
+.vegetable-form {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto;
+  gap: 10px;
+  align-items: end;
+  margin-bottom: 14px;
+}
+
+.vegetable-form label {
+  margin: 0;
+}
+
 label {
   display: grid;
   gap: 6px;
@@ -466,6 +478,10 @@ th {
 @media (max-width: 640px) {
   .app {
     padding: 18px 10px;
+  }
+
+  .vegetable-form {
+    grid-template-columns: 1fr;
   }
 
   .top-card,
