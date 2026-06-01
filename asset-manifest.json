@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/diet-manager/static/css/main.f1a649ac.css",
-    "main.js": "/diet-manager/static/js/main.874c6df3.js",
+    "main.css": "/diet-manager/static/css/main.741892d7.css",
+    "main.js": "/diet-manager/static/js/main.8771016c.js",
     "static/js/396.5e5d5cab.chunk.js": "/diet-manager/static/js/396.5e5d5cab.chunk.js",
     "static/js/239.3ca1022a.chunk.js": "/diet-manager/static/js/239.3ca1022a.chunk.js",
     "static/js/453.2450cc6b.chunk.js": "/diet-manager/static/js/453.2450cc6b.chunk.js",
     "static/js/977.ceda8446.chunk.js": "/diet-manager/static/js/977.ceda8446.chunk.js",
     "static/js/455.53376a39.chunk.js": "/diet-manager/static/js/455.53376a39.chunk.js",
     "index.html": "/diet-manager/index.html",
-    "main.f1a649ac.css.map": "/diet-manager/static/css/main.f1a649ac.css.map",
-    "main.874c6df3.js.map": "/diet-manager/static/js/main.874c6df3.js.map",
+    "main.741892d7.css.map": "/diet-manager/static/css/main.741892d7.css.map",
+    "main.8771016c.js.map": "/diet-manager/static/js/main.8771016c.js.map",
     "396.5e5d5cab.chunk.js.map": "/diet-manager/static/js/396.5e5d5cab.chunk.js.map",
     "239.3ca1022a.chunk.js.map": "/diet-manager/static/js/239.3ca1022a.chunk.js.map",
     "453.2450cc6b.chunk.js.map": "/diet-manager/static/js/453.2450cc6b.chunk.js.map",
@@ -17,7 +17,7 @@
     "455.53376a39.chunk.js.map": "/diet-manager/static/js/455.53376a39.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f1a649ac.css",
-    "static/js/main.874c6df3.js"
+    "static/css/main.741892d7.css",
+    "static/js/main.8771016c.js"
   ]
 }
